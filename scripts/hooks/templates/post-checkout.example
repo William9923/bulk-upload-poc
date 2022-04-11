@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# An example hook script that executed to the new branch as target for checkout (switching branch).
+# Called by "git checkout <new branch>" with no arguments.
+#
+# To enable this hook, rename this file to "post-checkout".
+#
+# Sample usage would be:
+# 1. running some dependencies need or removing program result in bin after switching branch
+
+echo "executing post-checkout branch hooks checks with args [$@]"

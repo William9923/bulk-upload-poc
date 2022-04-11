@@ -1,0 +1,5 @@
+#!/bin/sh
+
+echo "executing commit-msg checks with arguments [$@]"
+
+go run scripts/hooks/go/commit_msg.go $@
