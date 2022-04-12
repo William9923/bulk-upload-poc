@@ -13,4 +13,7 @@ require (
 	gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c // indirect
 )
 
-require golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+require (
+	github.com/William9923/httpmiddleware v0.0.0-20220308041757-d6667b2c7d4f
+	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
+)
