@@ -1,22 +1,15 @@
-# Wordle The Developer
+# Bulk Upload System POC
 <p align="center">
-  <img src="docs/img/gopher-hooks.jpeg" />
+  <img src="https://raw.githubusercontent.com/egonelbre/gophers/master/vector/superhero/lifting-1TB.svg" />
 </p>
 
 ## Why?
-To increase the productivity of a developer, I would like to simplify the init process when trying to develop an application. 
+A lot of application need uploading system. When you only need to upload 200 - 300 data, using normal uploading system will not be a problem.
 
-One way to do that are by using template (boilerplate). This template provides many **git hooks**. Git hooks are scripts that Git executes before or after events such as: commit, push, and receive. Git hooks are a built-in feature - no need to download anything. Git hooks are run locally.
+Problem arise when you are trying to upload a lot of data. There are various problem that can happen, such as context deadline or partial error on some row. There are various way to handle this problem, and the solution that we are going to build is only one way to solve it.
 
 ## What?
-To make it easier to use, I give a concrete example of application that use the capabilities of command line interface, http and cron (scheduler)... to play a simple wordle game. This game simply replicates the current trending wordle game, but would be useful for future me when trying to build new application...
-
-## Hooks Overview
-In this repo, there are 4 hooks that I implemented for Golang (could be used for other programming languange too):
-- pre-commit: Used to apply gofmt & goimports before committing the code.
-- commit-msg: Used to check the format of commit message before commit. Will fail if not suitable from predetermined template
-- pre-push: Used to check with unit test before pushing items into remote repo. But, will pass if commit message contains WIP (work in progress). Also, prevent from accidental push to master.
-- post-checkout: Used to perform dependencies check (vendor, etc) when switching branch.
+A simple bulk upload system to handle alot of data. It simply representing a fake blacklist uploading system, where operator can upload a bunch of user to be blacklisted. After the operator uploaded it, the operator then can see a report for each row (data) to check either the upload is succesful or not...
 
 ## Prerequisites
 - Golang minimum v1.12 (https://golang.org/doc/install)
@@ -25,7 +18,7 @@ In this repo, there are 4 hooks that I implemented for Golang (could be used for
 ## How to Run 
 1. Clone the repository
 ```bash
-git clone git@github.com:William9923/hook-the-git.git
+git clone git@github.com:William9923/bulk-upload-poc.git
 ```
 2. Setup the hooks
 ```bash

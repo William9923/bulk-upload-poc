@@ -30,6 +30,3 @@ cli:
 
 cron:
 	GOPRIVATE=${willi-repo} go run ./cmd/cron/
-
-line:
-	GOPRIVATE=${willi-repo} go run ./cmd/line/
