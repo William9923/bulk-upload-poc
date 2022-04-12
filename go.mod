@@ -1,4 +1,4 @@
-module github.com/William9923/hook-the-git
+module github.com/William9923/bulk-upload-poc
 
 go 1.17
 

@@ -25,3 +25,6 @@ git clone git@github.com:William9923/bulk-upload-poc.git
 sh ./setup.sh
 ```
 
+## Notes
+As a sidenote, I would like to give further notice first that the project structure does not represent common startup / big company project structure. It is very unlikely that a product only have a single usecase (in this project, only upload and export). When you have more complicated usecase that need to be modularized, please follow Golang guide for usecase & domain modularization
+
