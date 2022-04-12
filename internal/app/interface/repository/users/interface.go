@@ -5,6 +5,6 @@ import (
 )
 
 type IUsersRepo interface {
-	GetUser(id int64) domain.User
-	GetUsers() []domain.User
+	GetUser(id int64) (domain.User, error)
+	GetUsers() ([]domain.User, error)
 }

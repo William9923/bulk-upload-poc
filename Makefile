@@ -24,9 +24,3 @@ dep:
 
 http:
 	GOPRIVATE=${willi-repo} go run ./cmd/http/
-
-cli:
-	GOPRIVATE=${willi-repo} go run ./cmd/cli/
-
-cron:
-	GOPRIVATE=${willi-repo} go run ./cmd/cron/

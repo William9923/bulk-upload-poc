@@ -5,6 +5,7 @@ import (
 )
 
 type IResultsRepo interface {
-	GetResult(id int64) domain.Result
-	GetResults() []domain.Result
+	GetResult(id int64) (domain.Result, error)
+	GetResults() ([]domain.Result, error)
+	CreateResult(domain.Result) (int64, error)
 }
