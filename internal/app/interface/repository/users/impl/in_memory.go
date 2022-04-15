@@ -41,7 +41,7 @@ func (impl InMemoryUsersRepo) GetUsers() ([]domain.User, error) {
 
 func (impl *InMemoryUsersRepo) UpdateUsers(users []domain.User) []error {
 
-	// Validate all bulk change data ...
+	// 1. Validate all bulk change data ...
 	indexes := []int64{}
 	errors := make([]error, len(users))
 	for i, user := range users {
@@ -52,7 +52,7 @@ func (impl *InMemoryUsersRepo) UpdateUsers(users []domain.User) []error {
 		indexes = append(indexes, idx)
 	}
 
-	// Update all....
+	// 2. Update all....
 	for i, idx := range indexes {
 
 		if err := randomError(); errors[i] == nil && err != nil {

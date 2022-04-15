@@ -19,18 +19,20 @@ func (u *Usecase) UploadWhitelists(ctx context.Context, file io.Reader) (ResultD
 	}
 
 	logger := logrus.WithContext(ctx)
+
+	// 1. Validate Whitelist data & collect all affected user data...
 	uploadInstances, err := u.validateWhitelists(ctx, file)
 	if err != nil {
 		return dto, err
 	}
-
 	affectedUsers := make([]domain.User, len(uploadInstances))
 	for i, instance := range uploadInstances {
 		affectedUsers[i] = instance.Data
 	}
 
+	// 2. Update user data using user repository & update the upload instance status...
+	// TODO: add goroutine capability --> or could use message queue if data too big ...
 	errs := u.usersRepo.UpdateUsers(affectedUsers)
-
 	for i, err := range errs {
 		uploadInstances[i].Status = constant.SUCCESS
 		if err != nil {
@@ -42,13 +44,14 @@ func (u *Usecase) UploadWhitelists(ctx context.Context, file io.Reader) (ResultD
 		}
 	}
 
-	// build upload result reports...
+	// 3. Build reports file (notes: if using message queue, need different approach to build the reports...)
 	results := domain.Result{Instances: uploadInstances}
 	results, err = u.resultsRepo.SaveResult(results)
 	if err != nil {
 		logger.Error("failed to save the result:", err)
-		// TODO: should be able to rollback, but we use in memory db so its hard...
 	}
+
+	// 4. Save reports data so it can be used in the future...
 	_, err = u.resultsRepo.CreateResult(results)
 	if err != nil {
 		logger.Error("unable to save upload results report: ", err)

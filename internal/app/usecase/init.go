@@ -23,20 +23,20 @@ func NewUsecase(
 }
 
 func (u Usecase) ShowUsers(ctx context.Context) (UsersDTO, error) {
-	data, err := u.usersRepo.GetUsers()
+	users, err := u.usersRepo.GetUsers()
 	if err != nil {
 		return UsersDTO{}, err
 	}
 
-	return UsersDTO{Users: data}, nil
+	return UsersDTO{Users: users}, nil
 
 }
 
 func (u Usecase) ShowResults(ctx context.Context) (ResultsDTO, error) {
-	data, err := u.resultsRepo.GetResults()
+	results, err := u.resultsRepo.GetResults()
 	if err != nil {
 		return ResultsDTO{}, err
 	}
 
-	return ResultsDTO{Results: data}, nil
+	return ResultsDTO{Results: results}, nil
 }

@@ -2,6 +2,7 @@ package http
 
 import (
 	"net/http"
+	"strconv"
 
 	"github.com/julienschmidt/httprouter"
 
@@ -14,6 +15,8 @@ type HTTPHandler interface {
 	HandleShowUsers(w http.ResponseWriter, req *http.Request, p httprouter.Params)
 	HandleShowUploadResults(w http.ResponseWriter, req *http.Request, p httprouter.Params)
 	HandleBulkUploadWhitelists(w http.ResponseWriter, req *http.Request, p httprouter.Params)
+	HandleExportUsers(w http.ResponseWriter, req *http.Request, p httprouter.Params)
+	HandleExportUploadResult(w http.ResponseWriter, req *http.Request, p httprouter.Params)
 }
 
 // Notes: Please seperate usecase if you want to expand the capability.
@@ -43,9 +46,10 @@ func (h handler) HandleShowUsers(w http.ResponseWriter, req *http.Request, p htt
 	if err != nil {
 		logger.Info("error when showing users : ", err.Error())
 		resp.SetError(http.StatusInternalServerError, err)
+		return
 	}
 
-	resp.Data = res
+	resp.SetData(res)
 
 }
 
@@ -61,9 +65,10 @@ func (h handler) HandleShowUploadResults(w http.ResponseWriter, req *http.Reques
 	if err != nil {
 		logger.Info("error when showing upload results : ", err.Error())
 		resp.SetError(http.StatusInternalServerError, err)
+		return
 	}
 
-	resp.Data = res
+	resp.SetData(res)
 }
 
 func (h handler) HandleBulkUploadWhitelists(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
@@ -84,8 +89,51 @@ func (h handler) HandleBulkUploadWhitelists(w http.ResponseWriter, req *http.Req
 	if err != nil {
 		logger.Info("error when uploading whitelists : ", err.Error())
 		resp.SetError(http.StatusInternalServerError, err)
+		return
 	}
 
-	resp.Data = res
+	resp.SetData(res)
 
+}
+
+func (h handler) HandleExportUsers(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
+	ctx := req.Context()
+	logger := logrus.WithContext(ctx)
+	resp := response.NewFileResponse(ctx)
+	defer resp.Render(w)
+
+	logger.Info("begin exporting users...")
+
+	buffer, err := h.usecase.ExportUsers(ctx)
+	if err != nil {
+		logger.Info("error when exporting users : ", err.Error())
+		resp.SetError(http.StatusInternalServerError, err)
+		return
+	}
+
+	resp.SetData(buffer)
+}
+
+func (h handler) HandleExportUploadResult(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
+	ctx := req.Context()
+	logger := logrus.WithContext(ctx)
+	resp := response.NewFileResponse(ctx)
+	defer resp.Render(w)
+
+	logger.Info("begin exporting upload results...")
+
+	id, err := strconv.Atoi(p.ByName("id"))
+	if err != nil {
+		logger.Info("failed to parse input : ", err.Error())
+		resp.SetError(http.StatusBadRequest, err)
+	}
+
+	buffer, err := h.usecase.ExportResult(ctx, int64(id))
+	if err != nil {
+		logger.Info("error when exporting upload results : ", err.Error())
+		resp.SetError(http.StatusInternalServerError, err)
+		return
+	}
+
+	resp.SetData(buffer)
 }

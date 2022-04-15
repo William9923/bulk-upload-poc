@@ -22,6 +22,10 @@ func routes(handler httpHandler.HTTPHandler) *httprouter.Router {
 
 	router.GET("/users", middleware.Wrap(handler.HandleShowUsers))
 	router.GET("/results", middleware.Wrap(handler.HandleShowUploadResults))
+
+	router.GET("/export/users", middleware.Wrap(handler.HandleExportUsers))
+	router.GET("/export/result/:id", middleware.Wrap(handler.HandleExportUploadResult))
+
 	router.POST("/upload", middleware.Wrap(handler.HandleBulkUploadWhitelists))
 
 	return router

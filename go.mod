@@ -2,8 +2,6 @@ module github.com/William9923/bulk-upload-poc
 
 go 1.17
 
-require github.com/stretchr/testify v1.7.0
-
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
 	github.com/julienschmidt/httprouter v1.3.0
@@ -17,3 +15,5 @@ require (
 	github.com/William9923/httpmiddleware v0.0.0-20220308041757-d6667b2c7d4f
 	golang.org/x/sys v0.0.0-20191026070338-33540a1f6037 // indirect
 )
+
+require github.com/stretchr/testify v1.7.0 // indirect
