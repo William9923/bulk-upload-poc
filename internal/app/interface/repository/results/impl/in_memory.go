@@ -2,21 +2,25 @@ package resultsrepoimpl
 
 import (
 	"fmt"
+	"path/filepath"
 
+	"github.com/William9923/bulk-upload-poc/internal/app/constant"
 	"github.com/William9923/bulk-upload-poc/internal/app/domain"
 	resultsrepo "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/results"
+	"github.com/William9923/bulk-upload-poc/pkg/csv"
 )
 
 type InMemoryResultsRepo struct {
 	results []domain.Result
 }
 
-type noData error
-var ErrNoData = noData(fmt.Errorf("no data found"))
+var ErrNoData = fmt.Errorf("no data found")
+var ErrTxFailed = fmt.Errorf("failed database transaction")
 
 func NewInMemoryResultsRepo() resultsrepo.IResultsRepo {
+
 	return &InMemoryResultsRepo{
-		results: []domain.Result{},
+		results: seeding(),
 	}
 }
 
@@ -34,7 +38,92 @@ func (impl InMemoryResultsRepo) GetResults() ([]domain.Result, error) {
 }
 
 func (impl *InMemoryResultsRepo) CreateResult(result domain.Result) (int64, error) {
+
+	// some hardcoded stuff, please change for your own database implementation...
 	result.Id = int64(len(impl.results))
+
 	impl.results = append(impl.results, result)
 	return result.Id, nil
+}
+
+func (impl *InMemoryResultsRepo) SaveResult(result domain.Result) (domain.Result, error) {
+	id := int64(len(impl.results))
+	url := filepath.Join("data", fmt.Sprintf("result-%d.csv", id))
+
+	// save to file
+	header := []string{
+		"Id",
+		"Name",
+		"Status",
+		"Upload Result",
+		"Reason",
+	}
+
+	contents := [][]string{}
+	for _, instance := range result.Instances {
+		content := make([]string, len(header))
+		content[0] = fmt.Sprintf("%d", instance.Data.Id)
+		content[1] = string(instance.Data.Name)
+		content[2] = fmt.Sprintf("%d", instance.Data.Status)
+		content[3] = fmt.Sprintf("%d", instance.Status)
+		content[4] = string(instance.Reason)
+
+		contents = append(contents, content)
+	}
+
+	csvFile := csv.New(header, contents)
+	csvFile.Save(url)
+
+	result.URL = url
+	return result, nil
+}
+
+func seeding() []domain.Result {
+
+	userData := domain.NullUser()
+
+	return []domain.Result{
+		{
+			Id: 1,
+			Instances: []domain.UploadInstance{
+				{
+					Idx:    0,
+					Data:   userData,
+					Status: constant.SUCCESS,
+				},
+				{
+					Idx:    1,
+					Data:   userData,
+					Status: constant.FAILED,
+				},
+				{
+					Idx:    2,
+					Data:   userData,
+					Status: constant.NOTPROCESSED,
+				},
+			},
+			URL: filepath.Join("data", "tmp.csv"),
+		},
+		{
+			Id: 2,
+			Instances: []domain.UploadInstance{
+				{
+					Idx:    0,
+					Data:   userData,
+					Status: constant.SUCCESS,
+				},
+				{
+					Idx:    1,
+					Data:   userData,
+					Status: constant.FAILED,
+				},
+				{
+					Idx:    2,
+					Data:   userData,
+					Status: constant.NOTPROCESSED,
+				},
+			},
+			URL: filepath.Join("data", "tmp.csv"),
+		},
+	}
 }

@@ -1,0 +1,1 @@
+Just think of this folder for Amazon S3 or the similar infrastructure (as a PoC, i don't want to spend money and maintaining it :D)

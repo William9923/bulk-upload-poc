@@ -7,4 +7,5 @@ import (
 type IUsersRepo interface {
 	GetUser(id int64) (domain.User, error)
 	GetUsers() ([]domain.User, error)
+	UpdateUsers(users []domain.User) []error
 }

@@ -5,9 +5,9 @@ import (
 )
 
 type User struct {
-	Id     int64
-	Name   string
-	Status int64
+	Id     int64  `json:"id"`
+	Name   string `json:"name"`
+	Status int64  `json:"status"`
 }
 
 func NullUser() User {

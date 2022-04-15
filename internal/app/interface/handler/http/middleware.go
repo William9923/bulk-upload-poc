@@ -16,6 +16,7 @@ func Logging(h httprouter.Handle) httprouter.Handle {
 	}
 }
 
+// TODO : if need authentication system
 func Authentication(fn httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
 		ctx := req.Context()
@@ -25,6 +26,7 @@ func Authentication(fn httprouter.Handle) httprouter.Handle {
 	}
 }
 
+// TODO : if need authorization system
 func Authorization(fn httprouter.Handle) httprouter.Handle {
 	return func(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
 		ctx := req.Context()

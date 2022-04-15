@@ -6,11 +6,14 @@ import (
 	"github.com/julienschmidt/httprouter"
 
 	"github.com/William9923/bulk-upload-poc/internal/app/usecase"
+	"github.com/William9923/bulk-upload-poc/pkg/response"
+	"github.com/sirupsen/logrus"
 )
 
 type HTTPHandler interface {
 	HandleShowUsers(w http.ResponseWriter, req *http.Request, p httprouter.Params)
 	HandleShowUploadResults(w http.ResponseWriter, req *http.Request, p httprouter.Params)
+	HandleBulkUploadWhitelists(w http.ResponseWriter, req *http.Request, p httprouter.Params)
 }
 
 // Notes: Please seperate usecase if you want to expand the capability.
@@ -29,9 +32,60 @@ func NewHTTPHandler(uc usecase.IUsecase) HTTPHandler {
 // Since the deliveries is not complicated, we will write in 1 file.
 // Notes, if the logic in deliveries is too long, please split into multiple files or use simpler logic (move to the usecase parts)
 func (h handler) HandleShowUsers(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
-	panic("implement this shid!")
+	ctx := req.Context()
+	logger := logrus.WithContext(ctx)
+	resp := response.NewJSONResponse(ctx)
+	defer resp.Render(w)
+
+	logger.Info("begin showing users...")
+
+	res, err := h.usecase.ShowUsers(ctx)
+	if err != nil {
+		logger.Info("error when showing users : ", err.Error())
+		resp.SetError(http.StatusInternalServerError, err)
+	}
+
+	resp.Data = res
+
 }
 
 func (h handler) HandleShowUploadResults(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
-	panic("implement this shid!")
+	ctx := req.Context()
+	logger := logrus.WithContext(ctx)
+	resp := response.NewJSONResponse(ctx)
+	defer resp.Render(w)
+
+	logger.Info("begin showing users...")
+
+	res, err := h.usecase.ShowResults(ctx)
+	if err != nil {
+		logger.Info("error when showing upload results : ", err.Error())
+		resp.SetError(http.StatusInternalServerError, err)
+	}
+
+	resp.Data = res
+}
+
+func (h handler) HandleBulkUploadWhitelists(w http.ResponseWriter, req *http.Request, p httprouter.Params) {
+	ctx := req.Context()
+	logger := logrus.WithContext(ctx)
+	resp := response.NewJSONResponse(ctx)
+	defer resp.Render(w)
+
+	logger.Info("begin uploading whitelists...")
+
+	file, _, err := req.FormFile("file")
+	if err != nil {
+		logger.Info("error retrieve file from form file : ", err.Error())
+		resp.SetError(http.StatusBadRequest, err)
+		return
+	}
+	res, err := h.usecase.UploadWhitelists(ctx, file)
+	if err != nil {
+		logger.Info("error when uploading whitelists : ", err.Error())
+		resp.SetError(http.StatusInternalServerError, err)
+	}
+
+	resp.Data = res
+
 }

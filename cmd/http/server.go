@@ -10,7 +10,7 @@ import (
 
 // Notes: configure in seperate configuration files for bigger projects...
 const (
-	HTTPPORT = ":8080"
+	HTTPPORT = "localhost:8080"
 	TIMEOUT  = 10
 )
 

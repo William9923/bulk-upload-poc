@@ -2,17 +2,15 @@ package usecase
 
 import "github.com/William9923/bulk-upload-poc/internal/app/domain"
 
-type UserDTO struct {
-	domain.User
+type UsersDTO struct {
+	Users []domain.User `json:"users"`
 }
 
-type UsersDTO struct {
-	users []UserDTO
+type ResultsDTO struct {
+	Results []domain.Result `json:"results"`
 }
 
 type ResultDTO struct {
-	domain.Result
-}
-type ResultsDTO struct {
-	results []ResultDTO
+	Id  int64  `json:"id"`
+	URL string `json:"url"`
 }

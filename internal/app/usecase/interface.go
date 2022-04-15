@@ -1,6 +1,14 @@
 package usecase
 
+import (
+	"context"
+	"io"
+)
+
 type IUsecase interface {
-	ShowUsers() (UsersDTO, error)
-	ShowResults() (ResultsDTO, error)
+	ShowUsers(ctx context.Context) (UsersDTO, error)
+	ShowResults(ctx context.Context) (ResultsDTO, error)
+	ExportUsers(ctx context.Context) ([]byte, error)
+	ExportResult(ctx context.Context, id int64) ([]byte, error) // TODO: can create additional class for params if the parameter start to be complicated...
+	UploadWhitelists(ctx context.Context, file io.Reader) (ResultDTO, error)
 }

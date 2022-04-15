@@ -1,6 +1,8 @@
 package usecase
 
 import (
+	"context"
+
 	resultsrepo "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/results"
 	usersrepo "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/users"
 )
@@ -20,32 +22,21 @@ func NewUsecase(
 	}
 }
 
-func (u Usecase) ShowUsers() (UsersDTO, error) {
+func (u Usecase) ShowUsers(ctx context.Context) (UsersDTO, error) {
 	data, err := u.usersRepo.GetUsers()
 	if err != nil {
 		return UsersDTO{}, err
 	}
 
-	dtos := make([]UserDTO, len(data))
-	for i, datum := range data {
-		dtos[i] = UserDTO{
-			User: datum,
-		}
-	}
-	return UsersDTO{users: dtos}, nil
+	return UsersDTO{Users: data}, nil
 
 }
-func (u Usecase) ShowResults() (ResultsDTO, error) {
+
+func (u Usecase) ShowResults(ctx context.Context) (ResultsDTO, error) {
 	data, err := u.resultsRepo.GetResults()
 	if err != nil {
 		return ResultsDTO{}, err
 	}
 
-	dtos := make([]ResultDTO, len(data))
-	for i, datum := range data {
-		dtos[i] = ResultDTO{
-			Result: datum,
-		}
-	}
-	return ResultsDTO{results: dtos}, nil
+	return ResultsDTO{Results: data}, nil
 }
