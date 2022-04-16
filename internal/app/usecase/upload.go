@@ -73,9 +73,10 @@ func (u Usecase) validateWhitelists(ctx context.Context, file io.Reader) ([]doma
 		return make([]domain.UploadInstance, 0), err
 	}
 
-	instances := make([]domain.UploadInstance, len(csvFile.Content))
+	contents := csvFile.GetContents()
+	instances := make([]domain.UploadInstance, len(contents))
 
-	for i, data := range csvFile.Content {
+	for i, data := range contents {
 
 		idx := int64(i)
 		userID, err := strconv.Atoi(data[0])

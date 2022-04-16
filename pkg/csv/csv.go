@@ -7,16 +7,23 @@ import (
 	"os"
 )
 
+type ICsv interface {
+	Export() (bytes.Buffer, error)
+	Save(path string) error
+	GetHeader() []string
+	GetContents() [][]string
+}
+
 type Csv struct {
 	Header  []string
 	Content [][]string
 }
 
-func New(header []string, Content [][]string) *Csv {
+func New(header []string, Content [][]string) ICsv {
 	return &Csv{Header: header, Content: Content}
 }
 
-func FromFile(file io.Reader) (*Csv, error) {
+func FromFile(file io.Reader) (ICsv, error) {
 
 	// read the file
 	reader := csv.NewReader(file)
@@ -38,6 +45,14 @@ func FromFile(file io.Reader) (*Csv, error) {
 func (c *Csv) Export() (bytes.Buffer, error) {
 	commaDelimiter := ','
 	return c.ExportWithCustomDelimiter(&commaDelimiter, true)
+}
+
+func (c Csv) GetHeader() []string {
+	return c.Header
+}
+
+func (c Csv) GetContents() [][]string {
+	return c.Content
 }
 
 func (c *Csv) ExportWithCustomDelimiter(delimiter *rune, mustHeader bool) (bytes.Buffer, error) {
