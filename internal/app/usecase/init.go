@@ -5,20 +5,24 @@ import (
 
 	resultsrepo "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/results"
 	usersrepo "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/users"
+	"github.com/William9923/bulk-upload-poc/pkg/csv"
 )
 
 type Usecase struct {
 	usersRepo   usersrepo.IUsersRepo
 	resultsRepo resultsrepo.IResultsRepo
+	csvBuilder  csv.ICsvBuilder
 }
 
 func NewUsecase(
 	usersRepo usersrepo.IUsersRepo,
 	resultsRepo resultsrepo.IResultsRepo,
+	csvBuilder csv.ICsvBuilder,
 ) IUsecase {
 	return &Usecase{
 		usersRepo:   usersRepo,
 		resultsRepo: resultsRepo,
+		csvBuilder:  csvBuilder,
 	}
 }
 

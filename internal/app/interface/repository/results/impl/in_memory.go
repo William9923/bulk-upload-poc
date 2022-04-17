@@ -11,7 +11,8 @@ import (
 )
 
 type InMemoryResultsRepo struct {
-	results []domain.Result
+	results    []domain.Result
+	csvBuilder csv.ICsvBuilder
 }
 
 var ErrNoData = fmt.Errorf("no data found")
@@ -20,7 +21,8 @@ var ErrTxFailed = fmt.Errorf("failed database transaction")
 func NewInMemoryResultsRepo() resultsrepo.IResultsRepo {
 
 	return &InMemoryResultsRepo{
-		results: seeding(),
+		results:    seeding(),
+		csvBuilder: &csv.CsvBuilder{},
 	}
 }
 
@@ -71,7 +73,7 @@ func (impl *InMemoryResultsRepo) SaveResult(result domain.Result) (domain.Result
 		contents = append(contents, content)
 	}
 
-	csvFile := csv.New(header, contents)
+	csvFile := impl.csvBuilder.Build(header, contents)
 	csvFile.Save(url)
 
 	result.URL = url

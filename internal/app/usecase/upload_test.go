@@ -1,36 +1,39 @@
 package usecase
 
 import (
-	"context"
-	"io"
-	"reflect"
 	"testing"
+
+	"github.com/stretchr/testify/mock"
 )
 
+type MockFile struct {
+	mock.Mock
+}
+
+func (mf *MockFile) Read(p []byte) (n int, err error) {
+	return 0, nil
+}
+
 func TestUsecase_UploadWhitelists(t *testing.T) {
-	type args struct {
-		ctx  context.Context
-		file io.Reader
-	}
-	tests := []struct {
-		name    string
-		u       *Usecase
-		args    args
-		want    ResultDTO
-		wantErr bool
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			got, err := tt.u.UploadWhitelists(tt.args.ctx, tt.args.file)
-			if (err != nil) != tt.wantErr {
-				t.Errorf("Usecase.UploadWhitelists() error = %v, wantErr %v", err, tt.wantErr)
-				return
-			}
-			if !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("Usecase.UploadWhitelists() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+
+	_ = MockFile{}
+
+	t.Run("should be able to check either file valid / not", func(t *testing.T) {})
+
+	t.Run("should be able to validate data", func(t *testing.T) {
+		t.Run("validate failed parsing", func(t *testing.T) {})
+
+		t.Run("validate unknown user", func(t *testing.T) {})
+
+		t.Run("validate invalid status", func(t *testing.T) {})
+
+		t.Run("validate correct instance", func(t *testing.T) {})
+	})
+
+	t.Run("should be able to handle failed saving reports file", func(t *testing.T) {})
+
+	t.Run("should be able to handle failed saving reports info to datastore", func(t *testing.T) {})
+
+	t.Run("should be able to return reports information if upload process successful", func(t *testing.T) {})
+
 }

@@ -7,7 +7,6 @@ import (
 
 	"github.com/William9923/bulk-upload-poc/internal/app/constant"
 	"github.com/William9923/bulk-upload-poc/internal/app/domain"
-	"github.com/William9923/bulk-upload-poc/pkg/csv"
 	"github.com/sirupsen/logrus"
 )
 
@@ -67,7 +66,7 @@ func (u Usecase) validateWhitelists(ctx context.Context, file io.Reader) ([]doma
 
 	logger := logrus.WithContext(ctx)
 
-	csvFile, err := csv.FromFile(file)
+	csvFile, err := u.csvBuilder.FromFile(file)
 	if err != nil {
 		logger.Error("unable to read file: ", err)
 		return make([]domain.UploadInstance, 0), err

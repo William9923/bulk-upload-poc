@@ -7,6 +7,11 @@ import (
 	"os"
 )
 
+type ICsvBuilder interface {
+	Build(header []string, content [][]string) ICsv
+	FromFile(file io.Reader) (ICsv, error)
+}
+
 type ICsv interface {
 	Export() (bytes.Buffer, error)
 	Save(path string) error
@@ -19,27 +24,41 @@ type Csv struct {
 	Content [][]string
 }
 
-func New(header []string, Content [][]string) ICsv {
-	return &Csv{Header: header, Content: Content}
+type CsvBuilder struct{}
+
+func NewCsvBuilder() ICsvBuilder {
+	return &CsvBuilder{}
 }
 
-func FromFile(file io.Reader) (ICsv, error) {
+func (c *CsvBuilder) Build(header []string, contents [][]string) ICsv {
+
+	return &Csv{
+		Header:  header,
+		Content: contents,
+	}
+}
+
+func (c *CsvBuilder) FromFile(file io.Reader) (ICsv, error) {
 
 	// read the file
 	reader := csv.NewReader(file)
 	records, err := reader.ReadAll()
 
-	if err != nil {
+	// check empty file
+	if err != nil || len(records) < 1 {
 		return nil, err
 	}
 
+	// get csv file header
 	header := records[0]
-	contents := records[1:]
 
-	return &Csv{
-		Header:  header,
-		Content: contents,
-	}, nil
+	// handle empty csv files
+	contents := [][]string{}
+	if len(records) > 1 {
+		contents = records[1:]
+	}
+
+	return c.Build(header, contents), nil
 }
 
 func (c *Csv) Export() (bytes.Buffer, error) {

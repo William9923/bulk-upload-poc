@@ -5,14 +5,16 @@ import (
 	resultsrepoimpl "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/results/impl"
 	usersrepoimpl "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/users/impl"
 	uc "github.com/William9923/bulk-upload-poc/internal/app/usecase"
+	"github.com/William9923/bulk-upload-poc/pkg/csv"
 )
 
 func startApp() error {
 	// Build infrastructure
 	usersRepo := usersrepoimpl.NewInMemoryResultsRepo()
 	resultsRepo := resultsrepoimpl.NewInMemoryResultsRepo()
+	csvBuilder := csv.NewCsvBuilder()
 
-	usecase := uc.NewUsecase(usersRepo, resultsRepo)
+	usecase := uc.NewUsecase(usersRepo, resultsRepo, csvBuilder)
 
 	// init handler
 	handler := httpHandler.NewHTTPHandler(usecase)

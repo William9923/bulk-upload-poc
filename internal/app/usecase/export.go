@@ -4,8 +4,6 @@ import (
 	"bytes"
 	"context"
 	"fmt"
-
-	"github.com/William9923/bulk-upload-poc/pkg/csv"
 )
 
 var EMPTYFILE = *new(bytes.Buffer)
@@ -35,7 +33,7 @@ func (u Usecase) ExportUsers(ctx context.Context) (bytes.Buffer, error) {
 		contents = append(contents, content)
 	}
 
-	csvFile := csv.New(header, contents)
+	csvFile := u.csvBuilder.Build(header, contents)
 
 	// 3. Export csv
 	dataBuffer, err := csvFile.Export()
@@ -75,7 +73,7 @@ func (u Usecase) ExportResult(ctx context.Context, id int64) (bytes.Buffer, erro
 		contents = append(contents, content)
 	}
 
-	csvFile := csv.New(header, contents)
+	csvFile := u.csvBuilder.Build(header, contents)
 
 	// 3. Export csv
 	dataBuffer, err := csvFile.Export()
