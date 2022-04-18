@@ -78,23 +78,24 @@ func (impl InMemoryUsersRepo) findIdx(user domain.User, users []domain.User) int
 }
 
 func seeding() []domain.User {
-	return []domain.User{
-		{
-			Id:     1,
-			Name:   "User 1",
-			Status: constant.WHITELIST,
-		},
-		{
-			Id:     2,
-			Name:   "User 2",
-			Status: constant.BLACKLIST,
-		},
-		{
-			Id:     3,
-			Name:   "User 3",
-			Status: constant.WHITELIST,
-		},
+
+	users := make([]domain.User, 100000)
+
+	for i := range users {
+
+		status := constant.WHITELIST
+		if status%2 == 0 {
+			status = constant.BLACKLIST
+		}
+
+		users[i] = domain.User{
+			Id:     int64(i + 1),
+			Name:   fmt.Sprintf("User %d", i+1),
+			Status: int64(status),
+		}
 	}
+
+	return users
 }
 
 func randomError() error {

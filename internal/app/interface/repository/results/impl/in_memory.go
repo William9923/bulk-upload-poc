@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"path/filepath"
 
-	"github.com/William9923/bulk-upload-poc/internal/app/constant"
 	"github.com/William9923/bulk-upload-poc/internal/app/domain"
 	resultsrepo "github.com/William9923/bulk-upload-poc/internal/app/interface/repository/results"
 	"github.com/William9923/bulk-upload-poc/pkg/csv"
@@ -21,7 +20,7 @@ var ErrTxFailed = fmt.Errorf("failed database transaction")
 func NewInMemoryResultsRepo() resultsrepo.IResultsRepo {
 
 	return &InMemoryResultsRepo{
-		results:    seeding(),
+		results:    []domain.Result{},
 		csvBuilder: &csv.CsvBuilder{},
 	}
 }
@@ -78,54 +77,4 @@ func (impl *InMemoryResultsRepo) SaveResult(result domain.Result) (domain.Result
 
 	result.URL = url
 	return result, nil
-}
-
-func seeding() []domain.Result {
-
-	userData := domain.NullUser()
-
-	return []domain.Result{
-		{
-			Id: 1,
-			Instances: []domain.UploadInstance{
-				{
-					Idx:    0,
-					Data:   userData,
-					Status: constant.SUCCESS,
-				},
-				{
-					Idx:    1,
-					Data:   userData,
-					Status: constant.FAILED,
-				},
-				{
-					Idx:    2,
-					Data:   userData,
-					Status: constant.NOTPROCESSED,
-				},
-			},
-			URL: filepath.Join("data", "tmp.csv"),
-		},
-		{
-			Id: 2,
-			Instances: []domain.UploadInstance{
-				{
-					Idx:    0,
-					Data:   userData,
-					Status: constant.SUCCESS,
-				},
-				{
-					Idx:    1,
-					Data:   userData,
-					Status: constant.FAILED,
-				},
-				{
-					Idx:    2,
-					Data:   userData,
-					Status: constant.NOTPROCESSED,
-				},
-			},
-			URL: filepath.Join("data", "tmp.csv"),
-		},
-	}
 }
