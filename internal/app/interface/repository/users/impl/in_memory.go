@@ -79,12 +79,12 @@ func (impl InMemoryUsersRepo) findIdx(user domain.User, users []domain.User) int
 
 func seeding() []domain.User {
 
-	users := make([]domain.User, 100000)
+	users := make([]domain.User, 10000)
 
 	for i := range users {
-
-		status := constant.WHITELIST
-		if status%2 == 0 {
+		var status int
+		status = constant.WHITELIST
+		if (i % 2) == 0 {
 			status = constant.BLACKLIST
 		}
 

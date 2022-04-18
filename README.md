@@ -16,10 +16,8 @@ Problem rise when the requirement expands. When  the number of data need to be u
 A simple bulk upload system to handle alot of data. I use a fake whitelist/blacklist system uploading system to showcase the system. The operator can upload a bunch of user to be blocked / unblocked. After the operator uploaded it, the operator then can see a report for each row (data) to check either the upload is succesful or not...
 
 ## 🔨 WIP Features
-- Unit test & Mocking
+- Scaling up System with Batching system & Goroutine 
 - Blogs (to documenting the though process creating the PoC)
-- Batching system (still trying to find good resource)
-- Goroutine (introduce concurrency to the system, tradeoff)
 - Message queue (same as goroutine, but need idempotency solution)
 
 ## 🚀 Quick start
