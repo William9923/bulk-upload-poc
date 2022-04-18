@@ -13,6 +13,7 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
+// Behavior driven unit test
 func TestUsecase_ExportUsers(t *testing.T) {
 
 	t.Run("should handle failed to fetch data", func(t *testing.T) {
@@ -134,7 +135,7 @@ func TestUsecase_ExportResult(t *testing.T) {
 		u := NewUsecase(mockUsersRepo, mockResultsRepo, mockCsvBuilder)
 
 		// Act
-		got, err := u.ExportUsers(dummyCtx)
+		got, err := u.ExportResult(dummyCtx, 1)
 
 		// Assert
 		assert.NotNil(t, err, "error should not nil")

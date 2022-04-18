@@ -17,7 +17,6 @@ import (
 
 var mockUsersRepo = mockusersrp.New(nil)
 var mockResultsRepo = mockresultsrp.New(nil)
-var mockCsv = mockcsv.New(nil)
 var mockCsvBuilder = mockcsv.NewBuilder(nil)
 var dummyUsecase = &Usecase{
 	usersRepo:   mockUsersRepo,
@@ -25,8 +24,9 @@ var dummyUsecase = &Usecase{
 	csvBuilder:  mockCsvBuilder,
 }
 var dummyCtx = context.Background()
-var errDummy = fmt.Errorf("Unit test mock error")
+var errDummy = fmt.Errorf("unit test mock error")
 
+// Table driven unit test
 func TestNewUsecase(t *testing.T) {
 	type args struct {
 		usersRepo   usersrepo.IUsersRepo

@@ -10,12 +10,15 @@ import (
 	"github.com/sirupsen/logrus"
 )
 
+var EMPTYINSTANCES = make([]domain.UploadInstance, 0)
+var EMPTYRESULTDTO = ResultDTO{
+	Id:  domain.NullResult().Id,
+	URL: domain.NullResult().URL,
+}
+
 func (u *Usecase) UploadWhitelists(ctx context.Context, file io.Reader) (ResultDTO, error) {
 
-	dto := ResultDTO{
-		Id:  domain.NullResult().Id,
-		URL: domain.NullResult().URL,
-	}
+	dto := EMPTYRESULTDTO
 
 	logger := logrus.WithContext(ctx)
 
@@ -69,7 +72,7 @@ func (u Usecase) validateWhitelists(ctx context.Context, file io.Reader) ([]doma
 	csvFile, err := u.csvBuilder.FromFile(file)
 	if err != nil {
 		logger.Error("unable to read file: ", err)
-		return make([]domain.UploadInstance, 0), err
+		return EMPTYINSTANCES, err
 	}
 
 	contents := csvFile.GetContents()
@@ -95,6 +98,7 @@ func (u Usecase) validateWhitelists(ctx context.Context, file io.Reader) ([]doma
 			instances[i] = domain.NullUploadInstance(idx, constant.STATUSNOTAVAILABLE)
 			instances[i].Data.Id = int64(userID)
 			instances[i].Data.Name = data[1]
+			continue
 		}
 		user.Status = int64(newStatus)
 
