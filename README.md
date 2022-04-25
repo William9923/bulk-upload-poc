@@ -3,9 +3,9 @@
     <img alt="William" src="docs/img/lifting-1TB.svg" width="300" />
     <h2 align="center">Bulk Upload</h2>
 </p> 
-<h3 align="center">A Simple Proof of Concept Guide for Uploading A Lot of Data to the Server</h3>
+<h3 align="center">A simple guide to uploading data to the Server</h3>
 
-<p align="center">Experiment Software Engineer Concept (Part 1)</p>
+<p align="center">Experiment in My Life (Part 1)</p>
 
 ## 😕 Why
 Many application need uploading system. When the requirement only need to be able to upload 200 - 300 data, simply upload the data to the system without any special handling will not be a problem.
@@ -17,8 +17,6 @@ A simple bulk upload system to handle alot of data. I use a fake whitelist/black
 
 ## 🔨 WIP Features
 - [ ] Scaling up System with Batching system & Goroutine 
-- [ ] Blogs (to documenting the though process creating the PoC)
-- [ ] Message queue (same as goroutine, but need idempotency solution)
 
 ## 🚀 Quick start
 1. Clone the repository
